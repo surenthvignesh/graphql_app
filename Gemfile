@@ -60,3 +60,7 @@ group :development do
   # gem "spring"
 end
 
+
+gem "dotenv-rails", "~> 3.1"
+
+gem "faker", "~> 3.4", :groups => [:development, :test]

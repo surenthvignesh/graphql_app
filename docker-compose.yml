@@ -1,0 +1,30 @@
+# version: '3'
+services:
+  db:
+    image: postgres:14.2
+    container_name: api_postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    command: "postgres -c 'max_connections=500'"
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - ${POSTGRES_PORT}:5432
+  redis:
+    image: redis:7.0.8
+    command: redis-server --appendonly yes
+    ports:
+      - target: 6379
+        published: ${REDIS_PORT}
+        protocol: tcp
+        mode: host
+    volumes:
+        - api_redis_data:/data
+    restart: always
+    environment:
+      - REDIS_REPLICATION_MODE=master
+volumes:
+  postgres_data: {}
+networks:
+  default:
+    name: myapp_default
